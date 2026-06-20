@@ -1,0 +1,31 @@
+{
+  "name": "ulanzi-n8n-workflow-monitor",
+  "version": "1.0.0",
+  "description": "Monitor any n8n workflow on your Ulanzi Deck — live runs, errors, success rate and average duration with 16 layouts, 10 themes, 24 languages, traffic-light status, blink-on-error and desktop alerts.",
+  "type": "module",
+  "keywords": [
+    "ulanzi",
+    "ulanzi-deck",
+    "ulanzideck",
+    "d200x",
+    "n8n",
+    "workflow",
+    "monitor",
+    "automation",
+    "plugin",
+    "stream-deck"
+  ],
+  "author": "Nikita Prochorov (https://github.com/prostonik94)",
+  "license": "MIT",
+  "homepage": "https://github.com/prostonik94/ulanzi-n8n-workflow-monitor#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prostonik94/ulanzi-n8n-workflow-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/prostonik94/ulanzi-n8n-workflow-monitor/issues"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

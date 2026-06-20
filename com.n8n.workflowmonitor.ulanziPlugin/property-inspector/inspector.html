@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>n8n Workflow Monitor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b1020; color: #e2e8f0; padding: 14px; font-size: 13px;
+    }
+    h3 {
+      font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+      color: #64748b; margin: 16px 0 8px; border-bottom: 1px solid #1e293b; padding-bottom: 5px;
+    }
+    h3:first-child { margin-top: 0; }
+    label { display: block; margin: 10px 0 4px; color: #94a3b8; }
+    input, select {
+      width: 100%; padding: 8px 10px; border: 1px solid #1e293b; border-radius: 6px;
+      background: #0f172a; color: #e2e8f0; font-size: 13px;
+    }
+    input:focus, select:focus { outline: none; border-color: #22c55e; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .hint { color: #475569; font-size: 11px; margin-top: 3px; }
+    button {
+      width: 100%; margin-top: 16px; padding: 9px; border: none; border-radius: 6px;
+      background: #22c55e; color: #06210f; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: transform .1s;
+    }
+    button:active { transform: scale(.97); }
+    code { background: #0f172a; padding: 1px 5px; border-radius: 4px; color: #93c5fd; }
+    .seg { display:flex; border:1px solid #1e293b; border-radius:6px; overflow:hidden; margin-bottom:4px; }
+    .seg button { flex:1; padding:8px 0; border:none; border-right:1px solid #1e293b; background:#0f172a; color:#94a3b8; font-size:13px; cursor:pointer; }
+    .seg button:last-child { border-right:none; }
+    .seg button.on { background:#22c55e; color:#06210f; font-weight:600; }
+    input[type=range] { padding:0; height:30px; background:transparent; border:none; accent-color:#22c55e; cursor:pointer; }
+    .langrow { display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-bottom:4px; }
+    .langrow label { margin:0; font-size:11px; color:#64748b; }
+    .langrow select { width:auto; padding:4px 8px; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="langrow">
+    <label for="lang" data-i18n="language">Language</label>
+    <select id="lang" name="lang">
+      <option value="en">English</option>
+      <option value="ru">Русский</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="it">Italiano</option>
+      <option value="nl">Nederlands</option>
+      <option value="pl">Polski</option>
+      <option value="pt-BR">Português (BR)</option>
+      <option value="zh-CN">简体中文</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="tr">Türkçe</option>
+      <option value="uk">Українська</option>
+      <option value="id">Bahasa Indonesia</option>
+      <option value="zh-TW">繁體中文</option>
+      <option value="vi">Tiếng Việt</option>
+      <option value="cs">Čeština</option>
+      <option value="sv">Svenska</option>
+      <option value="pt-PT">Português (PT)</option>
+      <option value="ar">العربية</option>
+      <option value="he">עברית</option>
+      <option value="fa">فارسی</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+  </div>
+  <form id="form">
+    <h3 data-i18n="conn">n8n Connection</h3>
+    <label for="n8nUrl" data-i18n="baseUrl">Base URL</label>
+    <input type="text" id="n8nUrl" name="n8nUrl" value="" placeholder="https://your-n8n-host.com">
+
+    <label for="apiKey" data-i18n="apiKey">API Key</label>
+    <input type="password" id="apiKey" name="apiKey" placeholder="n8n → Settings → n8n API → Create">
+    <div class="hint" data-i18n="apiKeyHint">Stored locally in the action settings. Never leaves your machine.</div>
+
+    <label for="workflowId" data-i18n="wfId">Workflow ID</label>
+    <input type="text" id="workflowId" name="workflowId" placeholder="e.g. AbCd1234EfGh5678">
+    <div class="hint"><span data-i18n="wfIdHint">From the n8n URL:</span> <code>/workflow/&lt;ID&gt;</code></div>
+
+    <label for="pressAction" data-i18n="onPress">On key press, open</label>
+    <select id="pressAction" name="pressAction">
+      <option value="workflow" data-i18n="opt_workflow">Workflow (editor)</option>
+      <option value="executions" data-i18n="opt_executions">Executions (run history)</option>
+    </select>
+
+    <h3 data-i18n="thresholds">Thresholds</h3>
+    <div class="row">
+      <div>
+        <label for="warnErrors" data-i18n="warnErr">Warn at errors ≥</label>
+        <input type="number" id="warnErrors" name="warnErrors" value="1" min="0">
+      </div>
+      <div>
+        <label for="critErrors" data-i18n="critErr">Critical at errors ≥</label>
+        <input type="number" id="critErrors" name="critErrors" value="5" min="1">
+      </div>
+    </div>
+    <label for="warnMs" data-i18n="slowMs">Slow if last run &gt; (ms)</label>
+    <input type="number" id="warnMs" name="warnMs" value="5000" min="100" step="100">
+
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:12px">
+      <input type="checkbox" id="notify" name="notify" style="width:auto;height:16px;accent-color:#22c55e">
+      <span data-i18n="notify">Desktop alert on failure</span>
+    </label>
+
+    <h3 data-i18n="display">Display</h3>
+    <label data-i18n="bigNumber">Big number</label>
+    <div class="seg" id="seg-metric">
+      <button type="button" data-v="runs">Runs</button>
+      <button type="button" data-v="errors">Errors</button>
+      <button type="button" data-v="success">Success</button>
+      <button type="button" data-v="avg">Avg</button>
+    </div>
+    <input type="hidden" id="metric" name="metric" value="runs">
+
+    <label data-i18n="period">Period</label>
+    <div class="seg" id="seg-period">
+      <button type="button" data-v="1h">1h</button>
+      <button type="button" data-v="24h">24h</button>
+      <button type="button" data-v="7d">7d</button>
+      <button type="button" data-v="30d">30d</button>
+    </div>
+    <input type="hidden" id="period" name="period" value="24h">
+
+    <label for="layout" data-i18n="layout">Layout</label>
+    <select id="layout" name="layout"></select>
+
+    <label><span data-i18n="cardText">Card text size — chips &amp; labels (1–10):</span> <b id="tsVal" style="color:#22c55e">4</b></label>
+    <input type="range" id="textScale" name="textScale" min="1" max="10" step="1" value="4">
+    <div class="hint" data-i18n="cardTextHint">Bigger = larger secondary text (chips / labels). High levels may overlap — pick your sweet spot.</div>
+
+    <label for="nameMode" data-i18n="longName">Long name</label>
+    <select id="nameMode" name="nameMode">
+      <option value="left" data-i18n="nm_left">Left — clip, static (default)</option>
+      <option value="fit" data-i18n="nm_fit">Fit — auto-size to width</option>
+      <option value="paginate" data-i18n="nm_paginate">Paginate — page through</option>
+      <option value="scroll" data-i18n="nm_scroll">Scroll — marquee</option>
+    </select>
+
+    <label><span data-i18n="titleSize">Title size (1–10):</span> <b id="tsValTitle" style="color:#22c55e">4</b></label>
+    <input type="range" id="titleScale" name="titleScale" min="1" max="10" step="1" value="4">
+
+    <div class="row">
+      <div>
+        <label for="intervalSec" data-i18n="checkEvery">Check every (sec)</label>
+        <input type="number" id="intervalSec" name="intervalSec" value="30" min="5" step="5">
+      </div>
+      <div>
+        <label for="theme" data-i18n="color">Color</label>
+        <select id="theme" name="theme"></select>
+      </div>
+    </div>
+
+    <button type="button" id="btn-save" data-i18n="save">Save settings</button>
+    <button type="button" id="btn-check" data-i18n="checkNow" style="margin-top:8px; background:transparent; border:1px solid #1e293b; color:#94a3b8;">↻ Check now</button>
+  </form>
+
+  <script src="../libs/js/eventEmitter.js"></script>
+  <script src="../libs/js/constants.js"></script>
+  <script src="../libs/js/utils.js"></script>
+  <script src="../libs/js/ulanzideckApi.js"></script>
+  <script src="inspector.js"></script>
+</body>
+</html>

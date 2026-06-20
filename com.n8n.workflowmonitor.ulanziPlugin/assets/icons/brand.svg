@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="ig" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1c2a47"/><stop offset="1" stop-color="#0b1120"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="58" fill="url(#ig)"/>
+  <!-- workflow: two nodes feeding a central node (n8n-style coral) -->
+  <path d="M80 90 C114 90 116 124 128 125" stroke="#ea4b71" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M176 90 C142 90 140 124 128 125" stroke="#ea4b71" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <circle cx="80" cy="90" r="17" fill="#ea4b71"/>
+  <circle cx="176" cy="90" r="17" fill="#ea4b71"/>
+  <circle cx="128" cy="126" r="22" fill="#ff7a98"/>
+  <!-- live monitor pulse (our green accent) -->
+  <polyline points="44,196 84,196 100,166 120,222 142,176 160,196 212,196" fill="none" stroke="#22c55e" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
