@@ -4,6 +4,8 @@
 
 # n8n Workflow Monitor — Ulanzi Deck Plugin
 
+[![Available on Ulanzi Community Store](https://raw.githubusercontent.com/narlei/ulanzicommunitystore/main/docs/badges/ulanzi-community-store.svg)](https://ulanzicommunitystore.narlei.com)
+
 **Turn any key on your Ulanzi Deck into a live status light for an n8n workflow.**
 Runs, errors, success rate and average duration — at a glance, updating on its own, in the style and color you choose.
 
