@@ -5,7 +5,7 @@
   "Category": "n8n Monitor",
   "CategoryIcon": "assets/icons/categoryIcon.svg",
   "Icon": "assets/icons/brand.svg",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "UUID": "com.n8n.workflowmonitor.deck",
   "Type": "JavaScript",
   "CodePath": "plugin/app.js",
